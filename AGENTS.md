@@ -327,4 +327,20 @@ gh pr create --title "feat(phase-NN/MM): add <slug>" --body "<5-line summary>"
 
 ---
 
-Last reviewed: 2026-10-06.
+## Cursor Cloud specific instructions
+
+Preview the curriculum site with `node scripts/serve-agent-site.js`. It binds `127.0.0.1:8795` and stays in the foreground. Lesson, phase, glossary, project, and manual routes read gitignored files. Regenerate them with `node site/build.js`, then `node site/build-projects.js --strict`, then `node site/build-manuals.js`. `site/build.js` rewrites the timestamp in tracked `site/data.js`; restore it with `git checkout -- site/data.js` when the rest of the diff is empty.
+
+The image already has Python 3.12, Node.js 22, Rust, and pnpm. Setup adds NumPy, Matplotlib, h5py, zstandard, and safetensors for the current user, plus `tsx` and Julia on `/usr/local/bin`. Jupyter and PyTorch stay uninstalled: this VM has no GPU, and `scripts/run_lesson_tests.py` skips lessons whose scientific imports are missing, the same way CI does.
+
+Checks from the repository root:
+
+```bash
+python3 phases/00-setup-and-tooling/01-dev-environment/code/verify.py --route ml-foundations
+python3 scripts/audit_lessons.py
+python3 scripts/project_test.py retrieval-evaluation-lab --solution --all --strict
+```
+
+---
+
+Last reviewed: 2026-10-23.
